@@ -77,18 +77,26 @@ app.delete('/api/screens/:screen_id', function (req, res) {
 });
 
 app.get('/api/screens/start/:screen_id', function (req, res) {
-    var exec = require('child_process').exec;
-    exec("pwd", function (error, stdout, stderr) {
-        if (stderr !== null && stderr.length !== 0) {
-            console.log("==>" + stderr + "<==");
-            return res.send(stderr);
+
+    Screen.find({
+        _id: req.params.screen_id
+    }, function (err, screen) {
+        if (err) {
+            return res.send(err);
         }
-        if (stdout !== null) {
-            return res.send(stdout);
-        }
-        if (error !== null) {
-            return res.send(error);
-        }
+        var exec = require('child_process').exec;
+        exec(`echo ${screen.name}`, function (error, stdout, stderr) {
+            if (stderr !== null && stderr.length !== 0) {
+                console.log("==>" + stderr + "<==");
+                return res.send(stderr);
+            }
+            if (stdout !== null) {
+                return res.send(stdout);
+            }
+            if (error !== null) {
+                return res.send(error);
+            }
+        });
     });
 
 });
