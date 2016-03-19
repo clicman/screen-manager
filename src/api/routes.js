@@ -1,20 +1,17 @@
-var mongoose = require('screen-model');
-var mongoose = require('express');
-var app = express();                               // create our app w/ express
+var mongoose = require('./models/screen-model');
 
-// routes ======================================================================
+module.exports = app => {
+    app.get('/api/screens', function (req, res) {
 
-// api ---------------------------------------------------------------------
-// get all screens
-app.get('/api/screens', function (req, res) {
+        // use mongoose to get all todos in the database
+        Screen.find(function (err, screens) {
 
-    // use mongoose to get all todos in the database
-    Screen.find(function (err, screens) {
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
 
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-        if (err)
-            res.send(err)
-
-        res.json(screens); // return all todos in JSON format
+            res.json(screens); // return all todos in JSON format
+        });
     });
-});
+
+}
