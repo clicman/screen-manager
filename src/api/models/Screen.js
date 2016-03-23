@@ -1,11 +1,14 @@
-var mongoose = require('mongoose');        
+var mongoose = require('../mongo');
 
-// define model =================
+/**
+ * Screen dcoument model
+ */
 var Screen = mongoose.model('Screen', {
-    name: String,
+    name: { type: String, unique: true },
     host: String,
     domain: String,
     login: String,
     password: String,
     reconnectEnabled: Boolean
 });
+module.exports = Screen;
